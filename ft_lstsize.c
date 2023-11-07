@@ -6,7 +6,7 @@
 /*   By: davidro2 <davidro2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 14:04:58 by davidro2          #+#    #+#             */
-/*   Updated: 2023/10/26 15:26:39 by davidro2         ###   ########.fr       */
+/*   Updated: 2023/11/07 11:36:13 by davidro2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ int	ft_lstsize(t_list *lst)
 	i = 0;
 	while (lst)
 	{
-		i++;
 		lst = lst->next;
+		i++;
 	}
 	return (i);
 }
