@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: david <david@student.42.fr>                +#+  +:+       +#+        */
+/*   By: davidro2 <davidro2@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 14:30:48 by davidro2          #+#    #+#             */
-/*   Updated: 2023/10/27 14:56:10 by david            ###   ########.fr       */
+/*   Updated: 2024/04/23 12:35:09 by davidro2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,60 +15,102 @@
 // splits a string in an array of strings whenever a
 // certain character appears
 
-static int	ft_countw(const char *str, char c)
+static int	ft_cwords(const char	*str, char c)
 {
 	int	i;
-	int	w;
+	int	words;
 
 	i = 0;
-	w = 0;
+	words = 0;
 	while (str[i])
 	{
-		while (str[i] == c)
+		while (str[i] == c && str[i])
 			i++;
+		if (str[i] != c && str[i])
+			words++;
 		while (str[i] != c && str[i])
 			i++;
-		w++;
 	}
-	if (str[i - 1] == c)
-		w--;
-	return (w);
+	return (words);
 }
 
-char	**ft_split(char const *s, char c)
+static int	ft_alloc_free(char **arraystr, int x, int j)
 {
-	int		x;
-	int		j;
-	size_t	i;
-	char	**strs;
-
-	x = 0;
-	i = 0;
-	strs = (char **)malloc((ft_countw(s, c) + 1) * sizeof(unsigned char *));
-	if (!strs)
-		return (NULL);
-	while (s[i])
+	arraystr[x] = (char *)malloc(j + 1);
+	if (arraystr[x] == NULL)
 	{
-		while (s[i] == c)
-			i++;
-		j = 0;
-		while (s[i + j] != c && s[i + j])
-			j++;
-		if (j > 0)
-			strs[x++] = ft_substr(s, i, j);
-		i = i + j;
+		while (x >= 0)
+		{
+			free(arraystr[x]);
+			x--;
+		}
+		free (arraystr);
+		return (1);
 	}
-	strs[x] = 0;
-	return (strs);
+	return (0);
 }
 
-// static void	ft_printstrs(char **splitted)
+static void	ft_giveword(const char *str, char *lstr, char c)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] && str[i] != c)
+	{
+		lstr[i] = str[i];
+		i++;
+	}
+	lstr[i] = '\0';
+}
+
+static void	*ft_putstring(const char *str, char c, char **arraystr)
+{
+	int		i;
+	int		j;
+	int		x;
+	int		error;
+
+	i = 0;
+	x = 0;
+	while (str[i])
+	{
+		if (str[i] == c)
+			i++;
+		else
+		{
+			j = 0;
+			while (str[i + j] != c && str[i + j])
+				j++;
+			error = ft_alloc_free(arraystr, x, j);
+			if (error)
+				return (NULL);
+			ft_giveword(str + i, arraystr[x++], c);
+			i += j;
+		}
+	}
+	arraystr[x] = NULL;
+	return (arraystr);
+}
+
+char	**ft_split(char const *str, char c)
+{
+	char	**arraystr;
+
+	arraystr = (char **)malloc(sizeof(char *) * (ft_cwords(str, c) + 1));
+	if (arraystr == NULL)
+		return (NULL);
+	if (!ft_putstring(str, c, arraystr))
+		return (NULL);
+	return (arraystr);
+}
+
+// static void	ft_printarraystrs(char **splitted)
 // {
 // 	int	i = 0;
 
 // 	while (splitted[i])
 // 	{
-// 		printf("%s \n", splitted[i]);
+// 		printf("%str \n", splitted[i]);
 // 		i++;
 // 	}
 // }
@@ -79,7 +121,7 @@ char	**ft_split(char const *s, char c)
 // 	char	c = 'i';
 // 	char	**splitted;
 // 	splitted = ft_split(str, c);
-// 	ft_printstrs(splitted);
+// 	ft_prinarraystrs(splitted);
 // 	int i = 0;
 // 	while (splitted[i])
 // 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: david <david@student.42.fr>                +#+  +:+       +#+        */
+/*   By: davidro2 <davidro2@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 14:16:03 by davidro2          #+#    #+#             */
-/*   Updated: 2023/10/27 18:16:20 by david            ###   ########.fr       */
+/*   Updated: 2024/04/23 12:12:51 by davidro2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,31 +26,27 @@
 
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	t_list	*new;
-	t_list	*temp;
+	t_list	*new_lst;
+	t_list	*new_node;
+	t_list	*process;
 
-	if (!lst)
+	if (!lst || !f)
 		return (NULL);
-	temp = lst;
-	new = ft_lstnew(f(lst->content));
-	if (!new)
+	new_lst = NULL;
+	while (lst)
 	{
-		ft_lstdelone(new, del);
-		return (NULL);
-	}
-	temp = new;
-	while (lst->next)
-	{
-		lst = lst->next;
-		temp->next = ft_lstnew(f(lst->content));
-		if (!temp->next)
+		process = f(lst->content);
+		new_node = ft_lstnew(process);
+		if (new_node == NULL)
 		{
-			ft_lstclear(&new, del);
+			del(process);
+			ft_lstclear(&new_lst, del);
 			return (NULL);
 		}
-		temp = temp->next;
+		ft_lstadd_back(&new_lst, new_node);
+		lst = lst->next;
 	}
-	return (new);
+	return (new_lst);
 }
 // //function that changes the content of the old list
 // //to the new one
