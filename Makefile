@@ -17,7 +17,10 @@ SRC = \
 	ft_strrchr.c ft_strncmp.c ft_memchr.c ft_memcmp.c ft_strnstr.c \
 	ft_atoi.c ft_calloc.c ft_strdup.c ft_strjoin.c ft_substr.c ft_strtrim.c \
 	ft_split.c ft_putchar_fd.c ft_itoa.c ft_strmapi.c ft_striteri.c \
-	ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c
+	ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c get_next_line.c \
+	get_next_line_utils.c get_next_line_bonus.c ft_vdtohex_pf.c ft_uputnbr_pf.c \
+	ft_strlen_pf.c ft_putstr_pf.c ft_putnbr_pf.c ft_puthex_pf.c \
+	ft_putchar_pf.c ft_printf.c ft_print_format.c \
 
 BSRC = \
 	ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_lstadd_back.c \
